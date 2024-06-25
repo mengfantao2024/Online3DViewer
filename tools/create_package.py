@@ -81,21 +81,21 @@ def CreateWebsite (rootDir, websiteDir, version, testBuild):
 			replacer.ReplaceTokenContent ('<!-- embed analytics start -->', '<!-- embed analytics end -->', embedAnalyticsContent)
 		replacer.WriteToFile (htmlFilePath)
 
-def CreateEnginePackage (rootDir, engineDir, websiteDir):
+def CreateEnginePackage (rootDir, engineDir):
 	if not os.path.exists (engineDir):
 		os.makedirs (engineDir)
 
 	zipPath = os.path.join (engineDir, 'o3dv.zip')
 	zip = zipfile.ZipFile (zipPath, mode = 'w', compression = zipfile.ZIP_DEFLATED)
-	for file in os.listdir (os.path.join (websiteDir, 'libs')):
-		zip.write (os.path.join (websiteDir, 'libs', file), 'libs/' + file)
-	for file in os.listdir (os.path.join (websiteDir, 'assets', 'envmaps')):
-		filePath = os.path.join (websiteDir, 'assets', 'envmaps', file)
-		if os.path.isdir (filePath):
-			for fileInDir in os.listdir (filePath):
-				zip.write (os.path.join (filePath, fileInDir), 'envmaps/' + file + '/' + fileInDir)
-		else:
-			zip.write (filePath, 'envmaps/' + file)
+	# for file in os.listdir (os.path.join (websiteDir, 'libs')):
+	# 	zip.write (os.path.join (websiteDir, 'libs', file), 'libs/' + file)
+	# for file in os.listdir (os.path.join (websiteDir, 'assets', 'envmaps')):
+	# 	filePath = os.path.join (websiteDir, 'assets', 'envmaps', file)
+	# 	if os.path.isdir (filePath):
+	# 		for fileInDir in os.listdir (filePath):
+	# 			zip.write (os.path.join (filePath, fileInDir), 'envmaps/' + file + '/' + fileInDir)
+	# 	else:
+	# 		zip.write (filePath, 'envmaps/' + file)
 	zip.write (os.path.join (rootDir, 'build', 'engine', 'o3dv.min.js'), 'o3dv.min.js')
 	zip.write (os.path.join (rootDir, 'LICENSE.md'), 'o3dv.license.md')
 	zip.close ()
@@ -114,17 +114,17 @@ def Main (argv):
 		buildDir = os.path.join (rootDir, 'build', 'package_test')
 		Utils.PrintInfo ('Creating test build.')
 
-	websiteDir = os.path.join (buildDir, 'website')
+	# websiteDir = os.path.join (buildDir, 'website')
 	engineDir = os.path.join (buildDir, 'engine')
 	if os.path.exists (buildDir):
 		shutil.rmtree (buildDir)
 
 	version = GetVersion (rootDir)
 	Utils.PrintInfo ('Create build directory')
-	CreateWebsite (rootDir, websiteDir, version, testBuild)
+	# CreateWebsite (rootDir, websiteDir, version, testBuild)
 
 	Utils.PrintInfo ('Create package.')
-	packageResult = CreateEnginePackage (rootDir, engineDir, websiteDir)
+	packageResult = CreateEnginePackage (rootDir, engineDir)
 	if not packageResult:
 		Utils.PrintError ('Create package failed.')
 		return 1
