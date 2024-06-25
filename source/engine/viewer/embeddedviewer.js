@@ -172,7 +172,7 @@ export class EmbeddedViewer {
         }
         progressDiv.innerHTML = message;
         if (this.parameters.onLoadError) {
-          this.parameters.onLoadError();
+          this.parameters.onLoadError(importError);
         }
       }
     });
